@@ -28,7 +28,7 @@ export default defineConfig({
   plugins: [
     documentInternationalization({
       supportedLanguages: [...locales],
-      schemaTypes: ["blog", "page", "docs"],
+      schemaTypes: ["blog", "page"],
       languageField: "locale",
       allowCreateMetaDoc: true,
     }),
@@ -53,7 +53,6 @@ export default defineConfig({
     context: DocumentActionsContext,
   ) => {
     switch (context.schemaType) {
-      case "docs":
       case "blog":
       case "category":
       case "page":
@@ -88,7 +87,6 @@ export default defineConfig({
         slugPrefixTpl("page"),
         slugPrefixTpl("blog"),
         slugPrefixTpl("category"),
-        slugPrefixTpl("docs"),
       ];
     },
   },

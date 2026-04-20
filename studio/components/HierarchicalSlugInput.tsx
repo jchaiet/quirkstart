@@ -15,12 +15,11 @@ import { useHierarchicalSlug } from "../hooks/useHierarchicalSlug";
 type HierarchicalSlugInputProps = ObjectInputProps<SlugValue, ObjectSchemaType>;
 
 const slugPrefixes: Record<string, string> = {
-  docs: "docs",
   blog: "blog/articles",
 };
 
 export const HierarchicalSlugInput: React.FC<HierarchicalSlugInputProps> = (
-  props
+  props,
 ) => {
   const { onChange, value } = props as any;
 
@@ -55,7 +54,7 @@ export const HierarchicalSlugInput: React.FC<HierarchicalSlugInputProps> = (
         onChange(unset());
       }
     },
-    [onChange]
+    [onChange],
   );
 
   // Handle the "Generate Slug" button click (Async Logic)

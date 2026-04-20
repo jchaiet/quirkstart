@@ -58,12 +58,6 @@ export async function POST(req: NextRequest) {
           revalidated.push(`${localePrefix}/blog`);
           break;
         }
-        case "docs": {
-          const path = `${localePrefix}/docs/${slug.current}`;
-          revalidatePath(path);
-          revalidated.push(path);
-          break;
-        }
         case "page":
         default: {
           const path =

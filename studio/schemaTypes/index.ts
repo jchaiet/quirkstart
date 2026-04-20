@@ -8,7 +8,6 @@ import { navigationGroupType } from "./navigation/navigationGroupType";
 import { pageType } from "./pageType";
 import { pageMetadataType } from "./pageMetadataType";
 import { blogPageType } from "./blogPageType";
-import { docsPageType } from "./docsPageType";
 
 /* Objects */
 import { categoryType } from "./objects/categoryType";
@@ -58,7 +57,6 @@ export const schemaTypes = [
   navigationType,
   navigationItemType,
   navigationGroupType,
-  docsPageType,
 
   categoryType,
   headingType,

@@ -27,15 +27,6 @@ const query = groq`{
     _updatedAt,
     locale,
     "slug": slug.current
-  },
-  "docs": *[
-    _type == "docs" &&
-    defined(slug.current) &&
-    !(_id in path("drafts.**"))
-  ]{
-    _updatedAt,
-    locale,
-    "slug": slug.current
   }
 }`;
 
@@ -66,17 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   });
 
-  const docEntries = (data.docs as SitemapPage[]).map((doc) => {
-    const prefix = doc.locale === defaultLocale ? "" : `/${doc.locale}`;
-    return {
-      url: `${baseUrl}${prefix}/docs/${doc.slug}`,
-      lastModified: doc._updatedAt,
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
-    };
-  });
-
-  return [...pageEntries, ...articleEntries, ...docEntries].sort(
+  return [...pageEntries, ...articleEntries].sort(
     (a, b) => b.priority - a.priority,
   );
 }

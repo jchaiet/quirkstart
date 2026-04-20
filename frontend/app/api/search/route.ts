@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const results = await sanityClient.fetch(
-      `*[_type in ["page", "blog", "docs"]
+      `*[_type in ["page", "blog"]
         && site->slug.current == $site
         && language == $locale
         && (${tokens.map((_, i) => `title match $token${i} || excerpt match $token${i} || metadata.description match $token${i}`).join(" || ")})

@@ -1,7 +1,7 @@
 import type { NavigationItem } from "@/types";
 
 export async function resolveNavItemHref(
-  item: NavigationItem
+  item: NavigationItem,
 ): Promise<string> {
   if (item.itemType === "external" && item.externalUrl) {
     return item.externalUrl;
@@ -13,9 +13,6 @@ export async function resolveNavItemHref(
 
     let prefix = "";
     switch (docType) {
-      case "docs":
-        prefix = "/docs";
-        break;
       case "blog":
         prefix = "/blog/articles";
         break;

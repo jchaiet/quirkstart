@@ -49,7 +49,7 @@ export const navigationItemType = defineType({
       title: "Internal Page",
       description: "Select an internal page to link to",
       type: "reference",
-      to: [{ type: "page" }, { type: "docs" }],
+      to: [{ type: "page" }],
       hidden: ({ parent }) =>
         (parent as NavigationItemValidationContext)?.itemType !== "internal",
       validation: (Rule) =>

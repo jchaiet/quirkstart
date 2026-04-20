@@ -28,7 +28,7 @@ import { rateLimit, rateLimitResponse } from "@/lib/rateLimit";
 
 // Fetch form config directly from page builder sections
 const formConfigFromPageQuery = `
-  *[_type in ["page", "blog", "docs"]] {
+  *[_type in ["page", "blog"]] {
     "match": pageBuilder[_type == "formBlock" && _key == $formId][0] {
       submissionType,
       emailTo,

@@ -22,7 +22,6 @@ export function resolveLocale(localeParam?: string): string {
 // Add new content types here to keep locale switching working correctly.
 const CONTENT_PATH_PREFIXES: [string[], number][] = [
   [["blog", "articles"], 2], // /blog/articles/[slug] → strip 2 segments
-  [["docs"], 1], // /docs/[slug] → strip 1 segment
 ];
 
 function nextPathToSanitySlug(path: string): string {

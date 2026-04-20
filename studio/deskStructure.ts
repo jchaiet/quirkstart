@@ -44,7 +44,7 @@ function siteContentList(
   sites: { _id: string; title: string }[],
   opts: {
     title: string;
-    schemaType: "page" | "blog" | "docs";
+    schemaType: "page" | "blog";
     idPrefix: string;
   },
 ) {
@@ -114,12 +114,6 @@ export const deskContent = structureTool({
           title: "Articles by Site",
           schemaType: "blog",
           idPrefix: "articles",
-        }),
-
-        siteContentList(S, context, sites, {
-          title: "Docs by Site",
-          schemaType: "docs",
-          idPrefix: "docs",
         }),
 
         S.divider(),

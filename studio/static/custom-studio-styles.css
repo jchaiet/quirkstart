@@ -1,0 +1,21 @@
+/* fieldset[data-testid*=".heading"] div[data-testid="pt-editor"], */
+fieldset[data-testid*=".title"] div[data-testid="pt-editor"],
+fieldset[data-testid*=".eyebrow"] div[data-testid="pt-editor"],
+fieldset[data-testid*=".person"] div[data-testid="pt-editor"],
+fieldset[data-testid*="field-announcement.content"]
+  div[data-testid="pt-editor"] {
+  min-height: 110px !important; /* Adjust this value as needed */
+  max-height: 125px !important; /* Prevents it from growing too tall */
+  resize: none !important; /* Removes the resize handle */
+  overflow-y: auto !important;
+}
+
+[data-mark="inlineCode"] {
+  font-family: monospace;
+  padding: 0.15em 0.3em;
+  text-decoration: none;
+  display: inline;
+  background-color: rgb(19, 20, 27);
+  border-bottom: 1px dashed rgb(189, 191, 203);
+  color: rgb(189, 191, 203);
+}

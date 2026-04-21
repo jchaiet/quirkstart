@@ -98,12 +98,15 @@ function writeEnvFile(filePath, examplePath, vars) {
 
 // ─── Install helper ───────────────────────────────────────────────────────────
 
-function install(cwd) {
+function install(label, cwd) {
+  log(`\n  ${c.dim}→ ${label}${c.reset}`);
   try {
     execSync("pnpm install", { cwd, stdio: "inherit" });
-    success(`Dependencies installed`);
+    success(`${label} installed`);
   } catch {
-    warn(`pnpm install failed — run it manually: cd ${cwd} && pnpm install`);
+    warn(
+      `pnpm install failed in ${label} — run manually: cd ${cwd} && pnpm install`,
+    );
   }
 }
 
@@ -220,9 +223,14 @@ async function main() {
 
   const runInstall = await prompt("Run pnpm install now? (yes/no)", "yes");
   if (["yes", "y"].includes(runInstall.toLowerCase())) {
-    install(ROOT);
+    install("root", ROOT);
+    install("frontend", resolve(ROOT, "frontend"));
+    install("studio", resolve(ROOT, "studio"));
   } else {
-    warn("Skipped — run pnpm install manually from the project root.");
+    warn("Skipped — run the following manually:");
+    log("    pnpm install");
+    log("    cd frontend && pnpm install");
+    log("    cd studio && pnpm install");
   }
 
   // ── Git reinit ────────────────────────────────────────────────────────────────

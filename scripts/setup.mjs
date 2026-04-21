@@ -17,7 +17,7 @@
 
 import { execSync } from "child_process";
 import { createInterface } from "readline";
-import { writeFileSync, existsSync, readFileSync } from "fs";
+import { writeFileSync, existsSync, readFileSync, rmSync } from "fs";
 import { randomBytes } from "crypto";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
@@ -223,6 +223,28 @@ async function main() {
     install(ROOT);
   } else {
     warn("Skipped — run pnpm install manually from the project root.");
+  }
+
+  // ── Git reinit ────────────────────────────────────────────────────────────────
+  step(7, "Resetting git history");
+
+  const gitDir = resolve(ROOT, ".git");
+  if (existsSync(gitDir)) {
+    try {
+      rmSync(gitDir, { recursive: true, force: true });
+      execSync('git init && git add -A && git commit -m "Initial commit"', {
+        cwd: ROOT,
+        stdio: "pipe",
+      });
+      success("Git history cleared — fresh repo initialized with no remote");
+    } catch {
+      warn("Could not reinitialize git — do it manually:");
+      log(
+        "    rm -rf .git && git init && git add -A && git commit -m 'Initial commit'",
+      );
+    }
+  } else {
+    warn("No .git directory found — skipping");
   }
 
   // ── Done ──────────────────────────────────────────────────────────────────

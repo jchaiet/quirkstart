@@ -39,8 +39,8 @@ dependencies:
     specifier: ^8.0.4
     version: 8.0.5
   quirk-ui:
-    specifier: ^0.1.123
-    version: 0.1.123(@portabletext/react@3.2.4)(@portabletext/types@2.0.15)(next@15.3.8)(path@0.12.7)(react-dom@19.2.5)(react@19.2.5)
+    specifier: ^0.1.124
+    version: 0.1.124(@portabletext/react@3.2.4)(@portabletext/types@2.0.15)(next@15.3.8)(path@0.12.7)(react-dom@19.2.5)(react@19.2.5)
   react-icons:
     specifier: ^5.5.0
     version: 5.6.0(react@19.2.5)
@@ -10164,8 +10164,8 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /quirk-ui@0.1.123(@portabletext/react@3.2.4)(@portabletext/types@2.0.15)(next@15.3.8)(path@0.12.7)(react-dom@19.2.5)(react@19.2.5):
-    resolution: {integrity: sha512-WmY06Xdo2XX3rlNzfmUBMhmYeoPkSllBkPilF6g9z7PogE4tbyB7TQev8TplXXocOdKbA7Ax3YImdPxrMex3Ng==}
+  /quirk-ui@0.1.124(@portabletext/react@3.2.4)(@portabletext/types@2.0.15)(next@15.3.8)(path@0.12.7)(react-dom@19.2.5)(react@19.2.5):
+    resolution: {integrity: sha512-V0b9gWXwxl0VCyHV6mUvoLkuPEY1z5Ix8sqq4c+dv2KoA8DGTyYRyXt8qarHbo71t5EeJVBmhsQ5VrS1NAzu7A==}
     peerDependencies:
       '@portabletext/react': ^3.2.1
       '@portabletext/types': ^2.0.13

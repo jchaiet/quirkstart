@@ -73,6 +73,7 @@ export default function PageTemplate({
       isSticky={navigationData?.isSticky}
       showLocaleSelect={navigationData?.showLocaleSelect}
       showSearch={navigationData?.showSearch}
+      showThemeToggle={navigationData?.showThemeToggle}
       sidebarNavItems={sidebarNavItems}
       announcement={announcement}
     >

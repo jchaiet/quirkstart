@@ -138,10 +138,10 @@ export default function Header({
     <Navbar
       renderText={renderText}
       searchComponent={<SearchModal />}
-      showSearch={showSearch}
-      showLocaleSelect={showLocaleSelect}
+      showSearch={showSearch ?? false}
+      showLocaleSelect={showLocaleSelect ?? false}
       localeSelectComponent={<LocaleModal links={localeLinks} />}
-      showThemeToggle={showThemeToggle}
+      showThemeToggle={showThemeToggle ?? false}
       themeToggleComponent={<ThemeToggle />}
       isSticky={isSticky}
       variant={variant}

@@ -25,7 +25,7 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 
-// ─── Colors ─────────────────────────────────────────────────────────────────
+// ─── Colours ─────────────────────────────────────────────────────────────────
 
 const c = {
   reset: "\x1b[0m",
@@ -59,35 +59,12 @@ function prompt(question, defaultValue = "") {
 }
 
 function promptSecret(question) {
+  // Use standard readline — raw mode conflicts with pasted input in most terminals.
+  // The value is visible while typing, which is acceptable for a local setup script.
   return new Promise((resolve) => {
-    process.stdout.write(`  ${question}: `);
-    process.stdin.setRawMode?.(true);
-    process.stdin.resume();
-
-    let value = "";
-    const onData = (char) => {
-      char = char.toString();
-      if (char === "\n" || char === "\r" || char === "\u0004") {
-        process.stdin.setRawMode?.(false);
-        process.stdin.pause();
-        process.stdin.removeListener("data", onData);
-        process.stdout.write("\n");
-        resolve(value);
-      } else if (char === "\u0003") {
-        process.exit();
-      } else if (char === "\u007F") {
-        if (value.length > 0) {
-          value = value.slice(0, -1);
-          process.stdout.clearLine(0);
-          process.stdout.cursorTo(0);
-          process.stdout.write(`  ${question}: ${"•".repeat(value.length)}`);
-        }
-      } else {
-        value += char;
-        process.stdout.write("•");
-      }
-    };
-    process.stdin.on("data", onData);
+    rl.question(`  ${question}: `, (answer) => {
+      resolve(answer.trim());
+    });
   });
 }
 

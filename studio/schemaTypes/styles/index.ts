@@ -1,6 +1,10 @@
 export { backgroundOptionType } from "./backgroundOptionType";
 export { borderOptionType } from "./borderOptionType";
-export { layoutOptionFull, layoutOptionSimple } from "./layoutOptionType";
+export {
+  layoutOptionFull,
+  layoutOptionSimple,
+  layoutOptionHero,
+} from "./layoutOptionType";
 export { orientationOptionType } from "./orientationOptionType";
 export { paddingOptionType } from "./paddingOptionType";
 export { themeOptionType } from "./themeOptionType";

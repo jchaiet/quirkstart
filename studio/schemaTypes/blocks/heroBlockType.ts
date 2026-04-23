@@ -4,10 +4,12 @@
 
 import { defineType, defineField } from "sanity";
 import { ImageIcon } from "@sanity/icons";
-import { paddingOptionType } from "../styles/paddingOptionType";
-import { layoutOptionHero } from "../styles/layoutOptionType";
-import { backgroundOptionType } from "../styles/backgroundOptionType";
-import { imageRadiusOptionType } from "../styles/imageRadiusOptionType";
+import {
+  layoutOptionHero,
+  paddingOptionType,
+  backgroundOptionType,
+  imageRadiusOptionType,
+} from "../styles";
 import { SyncedImageInput } from "../../components/SyncedImageInput";
 import { idField } from "../fields/idField";
 

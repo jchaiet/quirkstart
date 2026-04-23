@@ -25,9 +25,13 @@ import { defineField } from "sanity";
 // ─── Shared option definitions ────────────────────────────────────────────────
 
 const layoutDefault = { title: "Default", value: "default" };
+const layoutBlog = {
+  title: "Blog",
+  value: "blog",
+};
 const layoutNarrow = {
   title: "Narrow (constrained reading width)",
-  value: "narrow", // kept as "blog" to match QuirkUI HeroLayout — do not rename
+  value: "narrow",
 };
 const layoutSplit5050 = { title: "Split 50/50", value: "split" };
 const layoutSplit3565 = { title: "Split 35/65", value: "split-35-65" };
@@ -41,6 +45,25 @@ const layoutFullBleed = {
 };
 
 // ─── Full layout options — HeroBlock and ContentBlock only ────────────────────
+export const layoutOptionHero = [
+  defineField({
+    name: "layout",
+    title: "Layout Options",
+    type: "string",
+    group: "layout",
+    options: {
+      layout: "radio",
+      list: [
+        layoutDefault,
+        layoutBlog,
+        layoutTile,
+        layoutFullBleed,
+        layoutSplit5050,
+        layoutSplit3565,
+      ],
+    },
+  }),
+];
 
 export const layoutOptionFull = [
   defineField({

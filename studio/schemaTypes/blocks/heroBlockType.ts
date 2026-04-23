@@ -5,7 +5,7 @@
 import { defineType, defineField } from "sanity";
 import { ImageIcon } from "@sanity/icons";
 import { paddingOptionType } from "../styles/paddingOptionType";
-import { layoutOptionFull } from "../styles/layoutOptionType";
+import { layoutOptionHero } from "../styles/layoutOptionType";
 import { backgroundOptionType } from "../styles/backgroundOptionType";
 import { imageRadiusOptionType } from "../styles/imageRadiusOptionType";
 import { SyncedImageInput } from "../../components/SyncedImageInput";
@@ -70,7 +70,7 @@ export const heroBlockType = defineType({
       ],
       fields: [
         ...paddingOptionType,
-        ...layoutOptionFull,
+        ...layoutOptionHero,
         ...imageRadiusOptionType,
         ...backgroundOptionType,
       ],

@@ -1,10 +1,10 @@
 import { defineType, defineField } from "sanity";
 import { ImageIcon } from "@sanity/icons";
 import { paddingOptionType } from "../styles/paddingOptionType";
-import { layoutOptionType } from "../styles/layoutOptionType";
+import { layoutOptionFull } from "../styles/layoutOptionType";
 import { backgroundOptionType } from "../styles/backgroundOptionType";
+import { imageRadiusOptionType } from "../styles/imageRadiusOptionType";
 import { idField } from "../fields/idField";
-import { imageRadiusOptionType } from "../styles";
 
 export const contentBlockType = defineType({
   name: "contentBlock",
@@ -137,7 +137,7 @@ export const contentBlockType = defineType({
       ],
       fields: [
         ...paddingOptionType,
-        ...layoutOptionType,
+        ...layoutOptionFull,
         ...imageRadiusOptionType,
         ...backgroundOptionType,
       ],

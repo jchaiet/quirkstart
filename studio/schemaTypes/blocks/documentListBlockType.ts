@@ -1,6 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { ThLargeIcon } from "@sanity/icons";
-import { layoutOptionType } from "../styles/layoutOptionType";
+import { layoutOptionSimple } from "../styles/layoutOptionType";
 import { paddingOptionType } from "../styles/paddingOptionType";
 import { backgroundOptionType } from "../styles/backgroundOptionType";
 import { idField } from "../fields/idField";
@@ -113,7 +113,7 @@ export const documentBlockType = defineType({
       ],
       fields: [
         ...paddingOptionType,
-        ...layoutOptionType,
+        ...layoutOptionSimple,
         ...backgroundOptionType,
       ],
     }),

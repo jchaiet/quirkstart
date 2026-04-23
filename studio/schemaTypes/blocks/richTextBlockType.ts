@@ -1,7 +1,7 @@
 import { defineType, defineField } from "sanity";
 import { TextIcon, ComposeIcon } from "@sanity/icons";
 import { paddingOptionType } from "../styles/paddingOptionType";
-import { layoutOptionType } from "../styles/layoutOptionType";
+import { layoutOptionSimple } from "../styles/layoutOptionType";
 import { backgroundOptionType } from "../styles/backgroundOptionType";
 import { idField } from "../fields/idField";
 
@@ -32,7 +32,7 @@ export const richTextBlockType = defineType({
       ],
       fields: [
         ...paddingOptionType,
-        ...layoutOptionType,
+        ...layoutOptionSimple,
         ...backgroundOptionType,
       ],
     }),

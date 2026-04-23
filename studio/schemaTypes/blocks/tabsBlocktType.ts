@@ -4,7 +4,7 @@ import { orientationOptionType } from "../styles/orientationOptionType";
 import { themeOptionType } from "../styles/themeOptionType";
 import { paddingOptionType } from "../styles/paddingOptionType";
 import { backgroundOptionType } from "../styles/backgroundOptionType";
-import { layoutOptionType } from "../styles/layoutOptionType";
+import { layoutOptionSimple } from "../styles/layoutOptionType";
 import { idField } from "../fields/idField";
 
 export const tabsBlockType = defineType({
@@ -22,8 +22,7 @@ export const tabsBlockType = defineType({
     defineField({
       name: "image",
       title: "Image",
-      type: "image",
-      options: { hotspot: true },
+      type: "imageWithLayout",
     }),
     defineField({
       name: "items",
@@ -54,8 +53,7 @@ export const tabsBlockType = defineType({
                 defineField({
                   name: "tabImage",
                   title: "Image",
-                  type: "image",
-                  options: { hotspot: true },
+                  type: "imageWithLayout",
                 }),
                 defineField({ name: "tabLink", type: "link" }),
                 defineField({
@@ -71,8 +69,7 @@ export const tabsBlockType = defineType({
                         defineField({
                           name: "itemImage",
                           title: "Image",
-                          type: "image",
-                          options: { hotspot: true },
+                          type: "imageWithLayout",
                         }),
                         defineField({
                           name: "itemText",
@@ -142,7 +139,7 @@ export const tabsBlockType = defineType({
       fields: [
         ...orientationOptionType,
         ...themeOptionType,
-        ...layoutOptionType,
+        ...layoutOptionSimple,
         ...paddingOptionType,
         ...backgroundOptionType,
       ],

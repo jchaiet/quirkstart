@@ -134,8 +134,6 @@ Content
 
 ### Style Options
 
-Composed per-block via `styleOptionsField(groups)`:
-
 | Group         | Description                          |
 | ------------- | ------------------------------------ |
 | `layout`      | Hero layout variant — heroBlock only |

@@ -126,10 +126,6 @@ export const cardType = defineType({
       title: "Call to Action",
       type: "link",
       group: "cta",
-      options: {
-        collapsible: true,
-        collapsed: false,
-      },
     }),
     defineField({
       name: "styleOptions",

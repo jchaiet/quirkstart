@@ -127,6 +127,10 @@ export const linkType = defineType({
       name: "linkOptions",
       title: "Link Options",
       type: "object",
+      options: {
+        collapsible: false,
+        collapsed: false,
+      },
       hidden: ({ parent }) =>
         parent?.type !== "link" || parent?.type === "none",
       fields: [

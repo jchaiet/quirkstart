@@ -1,6 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { StarIcon } from "@sanity/icons";
-import { layoutOptionType } from "../styles/layoutOptionType";
+import { layoutOptionSimple } from "../styles/layoutOptionType";
 import { paddingOptionType } from "../styles/paddingOptionType";
 import { backgroundOptionType } from "../styles/backgroundOptionType";
 import IncludeFiltersWithDefaults from "../../components/IncludeFiltersWithDefaults";
@@ -214,7 +214,7 @@ export const featuredDocumentsBlockType = defineType({
       ],
       fields: [
         ...paddingOptionType,
-        ...layoutOptionType,
+        ...layoutOptionSimple,
         ...backgroundOptionType,
       ],
     }),

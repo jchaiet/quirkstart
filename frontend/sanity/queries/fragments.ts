@@ -165,7 +165,7 @@ export const tabItemFragment = `
       ${richTextFragment}
     },
     tabImage {
-      ${imageAssetFragment}
+      ${imageWithLayoutFragment}
     },
     tabLink {
       ${linkFragment}
@@ -176,7 +176,7 @@ export const tabItemFragment = `
         ${richTextFragment}
       },
       itemImage {
-        ${imageAssetFragment}
+        ${imageWithLayoutFragment}
       }
     },
     tabDisclaimer[]{
@@ -255,7 +255,7 @@ export const singletonFragment = `
         ...,
         "_type": "rating",
         image{
-          ${imageAssetFragment}
+          ${imageWithLayoutFragment}
         },
         eyebrow[]{
           ...,
@@ -356,7 +356,7 @@ export const carouselBlockFragment = `
     ...,
     image {
       ...,
-      ${imageAssetFragment}
+      ${imageWithLayoutFragment}
     },
     callToAction{
       ${linkFragment}
@@ -369,7 +369,7 @@ export const carouselBlockFragment = `
         ...,
         _type,
         image{
-          ${imageAssetFragment}
+          ${imageWithLayoutFragment}
         },
         eyebrow[]{
           ...,
@@ -454,7 +454,7 @@ export const tabsBlockFragment = `
   },
   image {
     ...,
-    ${imageAssetFragment}
+    ${imageWithLayoutFragment}
   },
   callToAction {
     ${callToActionFragment}

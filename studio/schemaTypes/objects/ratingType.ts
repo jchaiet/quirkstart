@@ -10,8 +10,7 @@ export const ratingType = defineType({
     defineField({
       name: "image",
       title: "Image",
-      type: "image",
-      options: { hotspot: true },
+      type: "imageWithLayout",
     }),
     defineField({
       name: "eyebrow",

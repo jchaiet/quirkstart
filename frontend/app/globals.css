@@ -100,6 +100,35 @@ h6 {
   text-wrap: pretty;
 }
 
+/* Heading size overrides */
+h1:has(> span.text-small),
+h1:has(> span.text-medium),
+h1:has(> span.text-large),
+h1:has(> span.text-xlarge),
+h2:has(> span.text-small),
+h2:has(> span.text-medium),
+h2:has(> span.text-large),
+h2:has(> span.text-xlarge),
+h3:has(> span.text-small),
+h3:has(> span.text-medium),
+h3:has(> span.text-large),
+h3:has(> span.text-xlarge),
+h4:has(> span.text-small),
+h4:has(> span.text-medium),
+h4:has(> span.text-large),
+h4:has(> span.text-xlarge),
+h5:has(> span.text-small),
+h5:has(> span.text-medium),
+h5:has(> span.text-large),
+h5:has(> span.text-xlarge),
+h6:has(> span.text-small),
+h6:has(> span.text-medium),
+h6:has(> span.text-large),
+h6:has(> span.text-xlarge) {
+  font-size: 1em;
+  line-height: inherit;
+}
+
 p {
   font-family: var(--font-family-primary);
   font-size: var(--font-size-md);

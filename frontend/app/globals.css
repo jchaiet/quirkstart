@@ -11,6 +11,7 @@
 
   @media (max-width: 767px) {
     --logo-height: 32px;
+    --nav-height: 50px;
   }
 
   --color-primary-light: #d9e2f4;
@@ -126,7 +127,7 @@ h6:has(> span.text-medium),
 h6:has(> span.text-large),
 h6:has(> span.text-xlarge) {
   font-size: 1em;
-  line-height: inherit;
+  /* line-height: inherit; */
 }
 
 p {

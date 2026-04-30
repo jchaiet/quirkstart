@@ -57,13 +57,40 @@ export const featuredDocumentsBlockType = defineType({
       group: "settings",
       options: {
         list: [
+          { title: "Page", value: "page" },
           { title: "Blog", value: "blog" },
-          { title: "News", value: "news" },
-          { title: "Resource", value: "resource" },
         ],
       },
       initialValue: "blog",
       hidden: ({ parent }) => parent?.selectionMode === "manual",
+    }),
+    defineField({
+      name: "parentPage",
+      title: "Parent Page",
+      description:
+        "Only show children of this page. Works alongside category filters. " +
+        "Useful for listing sibling pages (e.g. all pages under 'Practice Areas').",
+      type: "reference",
+      group: "settings",
+      to: [{ type: "page" }, { type: "blog" }],
+      options: {
+        disableNew: true,
+      },
+      hidden: ({ parent }) => parent?.documentType !== "page",
+    }),
+    defineField({
+      name: "cardStyle",
+      title: "Card Style",
+      type: "string",
+      group: "settings",
+      options: {
+        list: [
+          { title: "Image Top", value: "image-top" },
+          { title: "Full Bleed", value: "full-bleed" },
+        ],
+      },
+      initialValue: "image-top",
+      hidden: ({ parent }) => parent?.documentType !== "page",
     }),
     defineField({
       name: "limit",
@@ -168,6 +195,10 @@ export const featuredDocumentsBlockType = defineType({
           name: "linkOptions",
           title: "Link Options",
           type: "object",
+          options: {
+            collapsible: false,
+            collapsed: false,
+          },
           fields: [
             defineField({
               name: "linkType",

@@ -3,13 +3,14 @@ import type { PageSection, SanityImage, SanityCategory } from "quirk-ui/sanity";
 import { documentListQuery } from "@/sanity/queries/fragments";
 import { remark } from "remark";
 import remarkGfm from "remark-gfm";
-import remarkHtml from "remark-html";
 
 export type ResolveSectionOptions = {
   locale?: string;
   site: string;
   isDraft?: boolean;
   categoryOverride?: string[] | undefined;
+  /** The _id of the current page — used to exclude it from document list queries */
+  currentId?: string;
 };
 
 export function resolveImagesDeep<T>(obj: T): T {
@@ -99,7 +100,7 @@ function normalizeCategoryFilters(filters: SanityCategory[]): string[] {
 
 export function resolveSections(
   sections: PageSection[],
-  { locale, site, isDraft, categoryOverride }: ResolveSectionOptions,
+  { locale, site, isDraft, categoryOverride, currentId }: ResolveSectionOptions,
 ): Promise<PageSection[]> {
   return Promise.all(
     sections.map(async (section) => {
@@ -119,13 +120,27 @@ export function resolveSections(
               ? [...baseInclude, ...categoryOverride]
               : baseInclude;
 
+          // parentPage ref — used when documentType is "page" to list siblings
+          const parentRef = (
+            section as PageSection & {
+              parentPage?: { _ref: string };
+            }
+          ).parentPage?._ref;
+
           const result = await sanityClient.fetch(
             documentListQuery,
             {
               locale,
               site,
-              excludeCategories,
-              includeCategories,
+              // Pass null when empty — GROQ null checks ($x == null) require
+              // the param to always be present, unlike !defined() which errors
+              // if the param is missing entirely
+              excludeCategories:
+                excludeCategories.length > 0 ? excludeCategories : null,
+              includeCategories:
+                includeCategories.length > 0 ? includeCategories : null,
+              parentRef: parentRef ?? null,
+              currentId: currentId ?? "",
               limit: section.limit ?? 3,
               documentType: section.documentType,
             },
@@ -134,14 +149,15 @@ export function resolveSections(
               : undefined,
           );
 
-          const resolvedInitialArticles = resolveImagesDeep(result.articles);
+          const resolvedInitialDocuments = resolveImagesDeep(result.documents);
 
           resolved = {
             ...resolved,
-            initialArticles: resolvedInitialArticles,
+            initialDocuments: resolvedInitialDocuments,
             initialTotalCount: result.count,
             initialIncludeCategories: includeCategories,
             initialExcludeCategories: excludeCategories,
+            parentPage: section.parentPage ?? null,
           };
         } catch (err) {
           console.error("Failed to fetch document list for section", err);
@@ -157,10 +173,7 @@ export function resolveSections(
         };
         const markdownString = markdownSection.content?.code ?? "";
         if (markdownString) {
-          const result = await remark()
-            .use(remarkGfm)
-            .use(remarkHtml, { sanitize: false })
-            .process(markdownString);
+          const result = await remark().use(remarkGfm).process(markdownString);
           resolved = { ...resolved, processedHtml: result.toString() };
         }
       }

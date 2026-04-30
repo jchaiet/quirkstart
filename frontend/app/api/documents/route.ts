@@ -1,13 +1,14 @@
 import { sanityClient, urlForImage } from "@/sanity/client";
-import { type ArticleItem } from "quirk-ui/sanity";
+import { type DocumentItem } from "quirk-ui/sanity";
 import { type NextRequest, NextResponse } from "next/server";
 import { rateLimit, rateLimitResponse } from "@/lib/rateLimit";
 
 export async function GET(req: NextRequest) {
+  console.log("START");
   const { allowed, retryAfter } = rateLimit(req, {
     max: 30,
     windowMs: 60_000,
-    prefix: "articles",
+    prefix: "documents",
   });
   if (!allowed) return rateLimitResponse(retryAfter);
 
@@ -22,6 +23,7 @@ export async function GET(req: NextRequest) {
   const excludeFilters = searchParams.getAll("exclude");
   const search = searchParams.get("search")?.trim();
   const locale = searchParams.get("locale") || "en-us";
+  const parentRef = searchParams.get("parentRef");
 
   const sortFieldMap: Record<string, string> = {
     "date-desc": "publishDate desc",
@@ -34,15 +36,12 @@ export async function GET(req: NextRequest) {
   const order = sortFieldMap[sort] ?? "publishDate desc";
 
   let categoryConditions = "";
-
   const allFilters = [...new Set([...includeFilters, ...categories])];
 
   if (allFilters.length > 0) {
     categoryConditions +=
       filterMode === "all"
-        ? `&& count((categories[]->_id)[@ in ${JSON.stringify(
-            allFilters,
-          )}]) == ${allFilters.length}`
+        ? `&& count((categories[]->_id)[@ in ${JSON.stringify(allFilters)}]) == ${allFilters.length}`
         : `&& count((categories[]->_id)[@ in ${JSON.stringify(allFilters)}]) > 0`;
   }
 
@@ -50,11 +49,13 @@ export async function GET(req: NextRequest) {
     categoryConditions += ` && count((categories[]->_id)[@ in ${JSON.stringify(excludeFilters)}]) == 0`;
   }
 
+  const parentCondition = parentRef ? `&& parent._ref == "${parentRef}"` : "";
+
   let searchCondition = "";
   if (search) {
     const escaped = search.replace(/"/g, '\\"');
     searchCondition = ` && (
-      title match "*${escaped}*" || 
+      title match "*${escaped}*" ||
       excerpt match "*${escaped}*" ||
       metadata.description match "*${escaped}*" ||
       count(categories[title match "*${escaped}*"]) > 0 ||
@@ -66,13 +67,17 @@ export async function GET(req: NextRequest) {
 
   const localeCondition = `&& locale == "${locale}"`;
 
-  const query = `*[
-    _type == "${documentType}" 
+  const baseFilter = `
+    _type == "${documentType}"
     ${categoryConditions}
+    ${parentCondition}
     ${searchCondition}
     ${localeCondition}
-  ] | order(${order}) [${start}...${start + limit}] {
+  `;
+
+  const query = `*[${baseFilter}] | order(${order}) [${start}...${start + limit}] {
     _id,
+    _type,
     title,
     slug,
     excerpt,
@@ -88,52 +93,56 @@ export async function GET(req: NextRequest) {
       }
     },
     publishDate,
-    categories[]->{ _id, title, slug { current } }
+    categories[]->{ _id, title, slug { current } },
+    parent->{ _ref, _type, title, slug { current } }
   }`;
 
-  const countQuery = `count(*[
-    _type == "${documentType}" 
-    ${categoryConditions}
-    ${searchCondition}
-    ${localeCondition}
-  ])`;
+  const countQuery = `count(*[${baseFilter}])`;
+
+  console.log("DOCS START");
 
   try {
-    const [articles, totalCount] = await Promise.all([
+    const [documents, totalCount] = await Promise.all([
       sanityClient.fetch(query),
       sanityClient.fetch(countQuery),
     ]);
 
-    const resolvedArticles = articles.map((article: ArticleItem) => ({
-      ...article,
-      featuredImage: article.featuredImage
+    const resolvedDocuments = documents.map((doc: DocumentItem) => ({
+      ...doc,
+      featuredImage: doc.featuredImage
         ? {
-            ...article.featuredImage,
+            ...doc.featuredImage,
             imageUrls: {
               default: {
-                small: urlForImage(article.featuredImage.defaultImage)
+                small: urlForImage(doc.featuredImage.defaultImage)
                   .width(300)
                   .quality(90)
                   .url(),
-                medium: urlForImage(article.featuredImage.defaultImage)
+                medium: urlForImage(doc.featuredImage.defaultImage)
                   .width(600)
                   .quality(90)
                   .url(),
-                large: urlForImage(article.featuredImage.defaultImage)
+                large: urlForImage(doc.featuredImage.defaultImage)
                   .width(1200)
                   .quality(90)
                   .url(),
               },
-              darkfault: {
-                small: urlForImage(article.featuredImage.darkImage)
+              dark: {
+                small: urlForImage(
+                  doc.featuredImage.darkImage ?? doc.featuredImage.defaultImage,
+                )
                   .width(300)
                   .quality(90)
                   .url(),
-                medium: urlForImage(article.featuredImage.darkImage)
+                medium: urlForImage(
+                  doc.featuredImage.darkImage ?? doc.featuredImage.defaultImage,
+                )
                   .width(600)
                   .quality(90)
                   .url(),
-                large: urlForImage(article.featuredImage.darkImage)
+                large: urlForImage(
+                  doc.featuredImage.darkImage ?? doc.featuredImage.defaultImage,
+                )
                   .width(1200)
                   .quality(90)
                   .url(),
@@ -143,11 +152,13 @@ export async function GET(req: NextRequest) {
         : null,
     }));
 
-    return NextResponse.json({ articles: resolvedArticles, totalCount });
+    console.log("DOCS: ", resolvedDocuments);
+
+    return NextResponse.json({ documents: resolvedDocuments, totalCount });
   } catch (error) {
-    console.error("Error fetching articles:", error);
+    console.error("[/api/documents] Error fetching documents:", error);
     return NextResponse.json(
-      { error: "Failed to fetch articles" },
+      { error: "Failed to fetch documents" },
       { status: 500 },
     );
   }

@@ -84,6 +84,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       site,
       isDraft: isEnabled,
       categoryOverride,
+      currentId: page._id,
     }),
     fetchNavigationData({
       site,

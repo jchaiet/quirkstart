@@ -24,11 +24,12 @@ import {
   WasHelpfulBlock,
   renderRichText,
   renderCallToAction,
+  GridCard,
 } from "quirk-ui/next";
 import {
   type PageSection,
   type SingletonBlockProps,
-  type ArticleItem,
+  type DocumentItem,
 } from "quirk-ui/sanity";
 import { type RenderImageProps } from "quirk-ui/core";
 import { nextImageAdapter, resolveImage, imageSizes } from "@/lib/imageAdapter";
@@ -81,6 +82,66 @@ function renderNextImage({
     height,
     style,
   });
+}
+
+function resolveCard(cardStyle: string, document: DocumentItem) {
+  console.log("STYLE", cardStyle);
+  console.log("DOC", document.title);
+  if (cardStyle === "full-bleed") {
+    return (
+      <GridCard
+        key={document._id}
+        title={document.title}
+        style="full-bleed"
+        callToAction={{
+          type: "link",
+          displayType: "text",
+          ariaLabel: `Learn more about ${document.title}`,
+          linkOptions: {
+            linkType: "internal",
+            internalUrl: {
+              slug: {
+                current: `${document.slug.current}`,
+              },
+            },
+          },
+        }}
+        image={document.featuredImage}
+        renderRichText={renderRichText}
+        renderImage={renderNextImage}
+        renderLink={renderLocaleLink}
+      />
+    );
+  }
+
+  if (cardStyle === "image-top") {
+    return (
+      <GridCard
+        key={document._id}
+        title={document.title}
+        style="image-top"
+        callToAction={{
+          type: "link",
+          displayType: "text",
+          ariaLabel: `Learn more about ${document.title}`,
+          linkOptions: {
+            linkType: "internal",
+            internalUrl: {
+              slug: {
+                current: `${document.slug.current}`,
+              },
+            },
+          },
+        }}
+        image={document.image}
+        renderRichText={renderRichText}
+        renderImage={renderNextImage}
+        renderLink={renderLocaleLink}
+      />
+    );
+  }
+
+  return null;
 }
 
 export function PageBuilder({
@@ -210,15 +271,22 @@ export function PageBuilder({
                 renderRichText={renderRichText}
                 renderCallToAction={renderCallToAction}
                 imageAdapter={nextImageAdapter}
-                renderCard={(article: ArticleItem) =>
+                renderCard={(document: DocumentItem) =>
                   isBlogList ? (
                     <BlogArticleCard
-                      key={article._id}
-                      article={article}
+                      key={document._id}
+                      document={document}
                       renderImage={renderNextImage}
                       renderLink={renderLocaleLink}
                     />
-                  ) : null
+                  ) : (
+                    <BlogArticleCard
+                      key={document._id}
+                      document={document}
+                      renderImage={renderNextImage}
+                      renderLink={renderLocaleLink}
+                    />
+                  )
                 }
               />
             );
@@ -234,13 +302,13 @@ export function PageBuilder({
                 renderCallToAction={renderCallToAction}
                 renderLink={renderLocaleLink}
                 renderCard={({
-                  article,
+                  document,
                   className,
                   index,
                   layout,
                   limit,
                 }: {
-                  article: ArticleItem;
+                  document: DocumentItem;
                   className?: string;
                   index: number;
                   layout?: string;
@@ -248,8 +316,8 @@ export function PageBuilder({
                 }) => {
                   return isBlogDocs ? (
                     <BlogArticleCard
-                      key={article._id}
-                      article={article}
+                      key={document._id}
+                      document={document}
                       className={className}
                       index={index}
                       layout={layout}
@@ -257,7 +325,9 @@ export function PageBuilder({
                       renderImage={renderNextImage}
                       renderLink={renderLocaleLink}
                     />
-                  ) : null;
+                  ) : (
+                    resolveCard(section.cardStyle, document)
+                  );
                 }}
               />
             );

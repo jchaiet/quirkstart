@@ -106,6 +106,15 @@ export const pageType = defineType({
         "Optional: Use a different footer menu for this page instead of the site's default.",
     }),
     defineField({
+      name: "featuredImage",
+      title: "Featured Image",
+      type: "image",
+      group: "details",
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
       name: "metadata",
       title: "Metadata",
       type: "pageMetadata",
@@ -125,6 +134,15 @@ export const pageType = defineType({
       title: "Announcement",
       type: "announcement",
       group: "details",
+    }),
+    defineField({
+      name: "categories",
+      title: "Categories",
+      description:
+        "Used for filtering pages in Document List and Featured Documents blocks.",
+      type: "array",
+      group: "details",
+      of: [{ type: "reference", to: [{ type: "category" }] }],
     }),
     defineField({
       name: "pageBuilder",

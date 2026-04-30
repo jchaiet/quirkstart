@@ -44,12 +44,25 @@ export const documentBlockType = defineType({
       group: "settings",
       options: {
         list: [
+          { title: "Page", value: "page" },
           { title: "Blog", value: "blog" },
-          { title: "News", value: "news" },
-          { title: "Resource", value: "resource" },
         ],
       },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "parentPage",
+      title: "Parent Page",
+      description:
+        "Only show children of this page. Works alongside category filters. " +
+        "Useful for listing sibling pages (e.g. all pages under 'Practice Areas').",
+      type: "reference",
+      group: "settings",
+      to: [{ type: "page" }, { type: "blog" }],
+      options: {
+        disableNew: true,
+      },
+      hidden: ({ parent }) => parent?.documentType !== "page",
     }),
     defineField({
       name: "includeFilters",
@@ -71,10 +84,10 @@ export const documentBlockType = defineType({
     }),
     defineField({
       name: "limit",
-      title: "Maximum number of articles",
+      title: "Maximum number of documents",
       group: "settings",
       type: "number",
-      description: "Optional: Limit the number of articles shown",
+      description: "Optional: Limit the number of documents shown",
     }),
     defineField({
       name: "categoryFilters",

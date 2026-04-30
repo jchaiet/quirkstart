@@ -76,7 +76,7 @@ export const callToActionFragment = `
   mobileOrientation
 `;
 
-export const articleFragment = `
+export const documentFragment = `
   ...,
   _id,
   title,
@@ -91,7 +91,8 @@ export const articleFragment = `
   featuredImage {
     ...,
     ${imageAssetFragment}
-  }
+  },
+  parent->{ _ref, _type, title, slug { current } }
 `;
 
 export const markdownBlockFragment = `
@@ -276,9 +277,11 @@ export const featuredDocumentsBlockFragment = `
   heading {
     ${headingFragment}
   },
-  manualArticles[]->{
-    ${articleFragment}
+  manualDocuments[]->{
+    ${documentFragment}
   },
+  parentPage,
+  cardStyle,
   callToAction {
     ${linkFragment}
   },
@@ -288,11 +291,12 @@ export const featuredDocumentsBlockFragment = `
   excludeFilters[]->{
     ${categoryFragment}
   },
-  "articles": *[
+  "documents": *[
     _type == ^.documentType && 
     locale == $locale &&
     site->identifier.current == $site &&
     _id != ^.^._id &&
+    (!defined(^.parentPage) || parent._ref == ^.parentPage._ref) &&
     (
       (
         ^.filterMode == "any" &&
@@ -315,8 +319,10 @@ export const featuredDocumentsBlockFragment = `
       count(categories[@._ref in ^.^.excludeFilters[]._ref]) == 0
     )
   ] | order(publishDate desc)[0...25] {
-    ${articleFragment}
+    ${documentFragment}
   },
+  parent->{ _ref, _type, title, slug { current } }
+
 `;
 
 export const accordionBlockFragment = `
@@ -420,22 +426,7 @@ export const documentListBlockFragment = `
   heading {
     ${headingFragment}
   },
-  "articles": *[
-    _type == ^.documentType && 
-    locale == $locale &&
-    site->identifier.current == $site &&
-    parent._ref == ^.id &&
-    (
-      !defined(^.includeFilters) ||
-      count(categories[@._ref in ^.^.includeFilters[]._ref]) > 0
-    ) &&
-    (
-      !defined(^.excludeFilters) ||
-      count(categories[@._ref in ^.^.excludeFilters[]._ref]) == 0
-    )
-  ] | order(publishDate desc) {
-    ${articleFragment}
-  },
+  parentPage,
   categoryFilters[]->{
     ${categoryFragment}
   },
@@ -541,33 +532,25 @@ export const stickyScrollBlockFragment = `
 
 export const documentListQuery = `
   {
-    "articles": *[
+    "documents": *[
       _type == $documentType &&
       locale == $locale &&
       site->identifier.current == $site &&
-      (
-        !defined($includeCategories) ||
-        count(categories[@._ref in $includeCategories]) > 0
-      ) &&
-      (
-        !defined($excludeCategories) ||
-        count(categories[@._ref in $excludeCategories]) == 0
-      )
+      _id != $currentId &&
+      ($parentRef == null || parent._ref == $parentRef) &&
+      ($includeCategories == null || count(categories[@._ref in $includeCategories]) > 0) &&
+      ($excludeCategories == null || count(categories[@._ref in $excludeCategories]) == 0)
     ] | order(publishDate desc) [0...$limit] {
-      ${articleFragment}
+      ${documentFragment}
     },
     "count": count(*[
       _type == $documentType &&
       locale == $locale &&
       site->identifier.current == $site &&
-      (
-        !defined($includeCategories) ||
-        count(categories[@._ref in $includeCategories]) > 0
-      ) &&
-      (
-        !defined($excludeCategories) ||
-        count(categories[@._ref in $excludeCategories]) == 0
-      )
+      _id != $currentId &&
+      ($parentRef == null || parent._ref == $parentRef) &&
+      ($includeCategories == null || count(categories[@._ref in $includeCategories]) > 0) &&
+      ($excludeCategories == null || count(categories[@._ref in $excludeCategories]) == 0)
     ])
   }
 `;

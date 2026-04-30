@@ -1,5 +1,4 @@
 import {
-  articleFragment,
   featuredDocumentsBlockFragment,
   markdownBlockFragment,
   singletonFragment,
@@ -13,6 +12,7 @@ import {
   cardGridBlockFragment,
   formBlockFragment,
   announcementFragment,
+  documentFragment,
 } from "./fragments";
 
 export const articleBySlugQuery = `
@@ -23,7 +23,7 @@ export const articleBySlugQuery = `
   site->identifier.current == $site
 ][0]{
   ...,
-  ${articleFragment},
+  ${documentFragment},
   ${announcementFragment},
   pageBuilder[]{
     ...,

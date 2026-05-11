@@ -2,6 +2,7 @@
 import React from "react";
 import {
   type ContentBlockProps,
+  type FeaturedDocumentsBlockProps,
   type QuoteBlockProps,
   type RichTextBlockProps,
   type FormValue,
@@ -85,8 +86,6 @@ function renderNextImage({
 }
 
 function resolveCard(cardStyle: string, document: DocumentItem) {
-  console.log("STYLE", cardStyle);
-  console.log("DOC", document.title);
   if (cardStyle === "full-bleed") {
     return (
       <GridCard
@@ -376,6 +375,51 @@ export function PageBuilder({
                     renderRichText={renderRichText}
                     renderCallToAction={renderCallToAction}
                     imageAdapter={nextImageAdapter}
+                  />
+                );
+              case "featuredDocumentsBlock":
+                const isBlogDocs =
+                  !fetchedSingleton.blockContent.documentType ||
+                  fetchedSingleton.blockContent.documentType === "blog";
+
+                return (
+                  <FeaturedDocumentsBlock
+                    key={i}
+                    {...(fetchedSingleton.blockContent as FeaturedDocumentsBlockProps)}
+                    renderRichText={renderRichText}
+                    renderCallToAction={renderCallToAction}
+                    renderLink={renderLocaleLink}
+                    renderCard={({
+                      document,
+                      className,
+                      index,
+                      layout,
+                      limit,
+                    }: {
+                      document: DocumentItem;
+                      className?: string;
+                      index: number;
+                      layout?: string;
+                      limit?: number;
+                    }) => {
+                      return isBlogDocs ? (
+                        <BlogArticleCard
+                          key={document._id}
+                          document={document}
+                          className={className}
+                          index={index}
+                          layout={layout}
+                          limit={limit}
+                          renderImage={renderNextImage}
+                          renderLink={renderLocaleLink}
+                        />
+                      ) : (
+                        resolveCard(
+                          fetchedSingleton.blockContent.cardStyle,
+                          document,
+                        )
+                      );
+                    }}
                   />
                 );
               case "richTextBlock":

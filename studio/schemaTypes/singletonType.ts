@@ -41,6 +41,10 @@ export const singletonType = defineType({
             value: "contentBlock",
           },
           {
+            title: "Featured Documents Block",
+            value: "featuredDocumentsBlock",
+          },
+          {
             title: "RichText Block",
             value: "richTextBlock",
           },
@@ -72,6 +76,13 @@ export const singletonType = defineType({
           type: "contentBlock",
           hidden: ({ parent, document }) =>
             document?.blockSelection !== "contentBlock",
+        }),
+        defineField({
+          name: "featuredDocumentsBlock",
+          title: "Featured Documents Block",
+          type: "featuredDocumentsBlock",
+          hidden: ({ parent, document }) =>
+            document?.blockSelection !== "featuredDocumentsBlock",
         }),
         defineField({
           name: "richTextBlock",

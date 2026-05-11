@@ -11,6 +11,7 @@ import {
   BlockquoteIcon,
   BlockContentIcon,
   DocumentSheetIcon,
+  ComponentIcon,
 } from "@sanity/icons";
 import { isUniqueByLocale } from "../lib/isUniqueByLocale";
 import { HierarchicalSlugInput } from "../components/HierarchicalSlugInput";
@@ -197,6 +198,12 @@ export const pageType = defineType({
           name: "featuredDocumentsBlock",
           title: "Featured Documents Block",
           icon: StarIcon,
+        }),
+        defineArrayMember({
+          type: "singletonBlock",
+          name: "singletonBlock",
+          title: "Singleton Block",
+          icon: ComponentIcon,
         }),
         defineArrayMember({
           type: "stickyScrollBlock",

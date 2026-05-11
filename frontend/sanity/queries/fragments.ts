@@ -232,6 +232,59 @@ export const singletonFragment = `
           ${callToActionFragment}
         }
       },
+blockSelection == "featuredDocumentsBlock" => blockContent.featuredDocumentsBlock{
+        ...,
+        "_type": "featuredDocumentsBlock",
+        heading {
+          ${headingFragment}
+        },
+        manualDocuments[]->{
+          ${documentFragment}
+        },
+        documentType,
+        parentPage,
+        cardStyle,
+        callToAction {
+          ${callToActionFragment}
+        },
+        includeFilters[]->{
+          ${categoryFragment}
+        },
+        excludeFilters[]->{
+          ${categoryFragment}
+        },
+        "documents": *[
+          _type == ^.documentType && 
+          locale == $locale &&
+          site->identifier.current == $site &&
+          _id != ^.^._id &&
+          (!defined(^.parentPage) || parent._ref == ^.parentPage._ref) &&
+          (
+            (
+              ^.filterMode == "any" &&
+              (
+                !defined(^.includeFilters) ||
+                count(categories[@._ref in ^.^.includeFilters[]._ref]) > 0
+              )
+            ) ||
+            (
+              ^.filterMode == "all" &&             
+              !defined(^.includeFilters) ||
+              (
+                count(^.includeFilters) > 0 &&
+                count(categories[@._ref in ^.^.includeFilters[]._ref]) == count(coalesce(^.includeFilters, []))
+              )
+            )
+          ) &&
+          (
+            !defined(^.excludeFilters) ||
+            count(categories[@._ref in ^.^.excludeFilters[]._ref]) == 0
+          )
+        ] | order(publishDate desc)[0...25] {
+          ${documentFragment}
+        },
+        parent->{ _ref, _type, title, slug { current } }
+      },      
       blockSelection == "richTextBlock" => blockContent.richTextBlock{
         ...,
         "_type": "richTextBlock",

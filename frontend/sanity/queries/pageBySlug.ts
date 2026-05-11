@@ -11,6 +11,7 @@ import {
   tabsBlockFragment,
   cardGridBlockFragment,
   stickyScrollBlockFragment,
+  singletonFragment,
   formBlockFragment,
   richTextFragment,
   announcementFragment,
@@ -87,7 +88,10 @@ export const pageBySlugQuery = `
       },
       _type == "stickyScrollBlock" => {
         ${stickyScrollBlockFragment}
-      }
+      },
+      _type == "singletonBlock" => {
+        ${singletonFragment}
+      },
     }
   }
 `;

@@ -33,7 +33,7 @@ const themeScript = `
     var stored = localStorage.getItem('theme-mode');
     var theme = (stored === 'dark' || stored === 'light')
       ? stored
-      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      : 'light'; // system preference ignored — dark theme not active
     document.documentElement.setAttribute('data-theme', theme);
   } catch (e) {}
 })();

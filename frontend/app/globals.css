@@ -143,6 +143,7 @@ ul {
     font-size: var(--font-size-md);
     color: var(--color-text-primary);
     margin-bottom: var(--spacing-sm);
+    break-inside: avoid;
   }
 }
 
